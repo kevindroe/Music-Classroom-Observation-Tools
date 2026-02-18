@@ -1,0 +1,523 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Music Classroom Observation Tools</title>
+  <meta name="description" content="A suite of modern, mobile-friendly music classroom observation tools by Kevin Droe, Ph.D." />
+
+  <style>
+    :root{
+      --bg0:#070A12;
+      --bg1:#0B1020;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.09);
+      --stroke: rgba(255,255,255,.12);
+      --text:#F6F7FF;
+      --muted: rgba(246,247,255,.72);
+      --muted2: rgba(246,247,255,.56);
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --shadow2: 0 10px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+      --radius2: 24px;
+      --focus: 0 0 0 4px rgba(142, 227, 255, .22);
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+
+.logo{
+  height: 44px;
+  width: auto;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+}
+
+      --c1:#8EE3FF;  /* cyan */
+      --c2:#B6FFCE;  /* mint */
+      --c3:#D2A8FF;  /* violet */
+      --c4:#FFD38E;  /* amber */
+      --c5:#FF9AD5;  /* pink */
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--font);
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 10% 0%, rgba(142,227,255,.14), transparent 55%),
+                  radial-gradient(900px 700px at 95% 20%, rgba(210,168,255,.14), transparent 55%),
+                  radial-gradient(900px 700px at 40% 95%, rgba(182,255,206,.10), transparent 55%),
+                  linear-gradient(180deg, var(--bg0), var(--bg1));
+      overflow-x:hidden;
+    }
+
+    .wrap{ max-width: 1120px; margin: 0 auto; padding: 22px 16px 60px; }
+
+    /* Top bar */
+    .top{
+      display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    .brand{
+      display:flex; align-items:center; gap:12px; min-width: 260px;
+    }
+    
+
+    .titleBlock h1{ font-size: 18px; margin:0; letter-spacing:.2px; }
+    .titleBlock .by{ font-size: 12px; color: var(--muted2); margin-top:2px; }
+
+    .tools{
+      display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end;
+    }
+
+    .search{
+      display:flex; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: 0 8px 22px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px);
+      min-width: min(520px, 100%);
+    }
+    .search svg{ opacity:.7; }
+    .search input{
+      width:100%;
+      border:0;
+      outline:none;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+    }
+    .search input::placeholder{ color: rgba(246,247,255,.52); }
+
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color: var(--muted);
+      font-size: 12px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .kbd{
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 2px 7px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: rgba(246,247,255,.82);
+    }
+
+    /* Hero */
+    .hero{
+      margin-top: 10px;
+      border-radius: var(--radius2);
+      background: linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.035));
+      border: 1px solid rgba(255,255,255,.10);
+      box-shadow: var(--shadow);
+      padding: 18px 16px;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero:before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(600px 200px at 20% 20%, rgba(142,227,255,.22), transparent 60%),
+        radial-gradient(600px 220px at 80% 10%, rgba(210,168,255,.20), transparent 60%),
+        radial-gradient(600px 240px at 60% 90%, rgba(182,255,206,.12), transparent 60%);
+      pointer-events:none;
+      filter: blur(2px);
+      opacity:.9;
+    }
+    .heroInner{ position:relative; z-index:1; display:flex; gap:16px; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; }
+    .hero h2{ margin:0; font-size: 22px; letter-spacing:.2px; }
+    .hero p{ margin: 8px 0 0; color: var(--muted); max-width: 74ch; line-height: 1.35; font-size: 13.5px; }
+    .ctaRow{ display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
+
+    .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      border: 0;
+      padding: 11px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 800;
+      color: var(--text);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow2);
+      text-decoration:none;
+      transition: transform .12s ease, background .12s ease, border-color .12s ease;
+      user-select:none;
+      touch-action: manipulation;
+    }
+    .btn:hover{ transform: translateY(-1px); background: rgba(255,255,255,.10); border-color: rgba(255,255,255,.18); }
+    .btn:active{ transform: translateY(0px) scale(.99); }
+    .btn:focus{ outline:none; box-shadow: var(--shadow2), var(--focus); }
+
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(142,227,255,.24), rgba(210,168,255,.20));
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    /* Cards grid */
+    .grid{
+      margin-top: 14px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+    @media (min-width: 860px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .card{
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.045));
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      position:relative;
+      transition: transform .12s ease, border-color .12s ease, background .12s ease;
+      min-height: 168px;
+    }
+    .card:hover{ transform: translateY(-1px); border-color: rgba(255,255,255,.20); }
+
+    .accent{
+      position:absolute; inset:0;
+      opacity:.85; pointer-events:none;
+      background: radial-gradient(500px 220px at 18% 15%, rgba(142,227,255,.18), transparent 60%);
+      filter: blur(0px);
+    }
+    .accent.a2{ background: radial-gradient(500px 220px at 18% 15%, rgba(182,255,206,.16), transparent 60%); }
+    .accent.a3{ background: radial-gradient(520px 240px at 18% 15%, rgba(210,168,255,.16), transparent 60%); }
+    .accent.a4{ background: radial-gradient(520px 240px at 18% 15%, rgba(255,211,142,.14), transparent 60%); }
+    .accent.a5{ background: radial-gradient(520px 240px at 18% 15%, rgba(255,154,213,.14), transparent 60%); }
+
+    .cardInner{
+      position:relative; z-index:1;
+      padding: 14px;
+      display:flex; flex-direction:column; gap: 10px;
+      height:100%;
+    }
+
+    .cardTop{ display:flex; align-items:flex-start; justify-content:space-between; gap: 10px; }
+    .cardTitle{ display:flex; gap:10px; align-items:flex-start; }
+    .icon{
+      width: 40px; height: 40px; border-radius: 14px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.12);
+      display:grid; place-items:center;
+      flex: 0 0 auto;
+    }
+
+    .card h3{ margin:0; font-size: 16px; letter-spacing:.2px; }
+    .card p{ margin: 3px 0 0; color: var(--muted); font-size: 13px; line-height: 1.35; }
+    .tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top: 2px; }
+    .tag{
+      font-size: 11px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(246,247,255,.78);
+    }
+
+    .cardActions{
+      margin-top:auto;
+      display:flex; gap:10px; flex-wrap:wrap; justify-content:space-between; align-items:center;
+    }
+    .tiny{
+      font-size: 12px;
+      color: rgba(246,247,255,.56);
+      display:flex; align-items:center; gap:8px;
+    }
+    .tiny code{
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.10);
+      padding: 2px 6px;
+      border-radius: 8px;
+      color: rgba(246,247,255,.76);
+    }
+
+    .footer{
+      margin-top: 16px;
+      color: rgba(246,247,255,.58);
+      font-size: 12px;
+      line-height: 1.35;
+      display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+    }
+    .footer a{ color: rgba(142,227,255,.9); text-decoration:none; }
+    .footer a:hover{ text-decoration: underline; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      *{ transition:none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <img src="Next-Gen-Music-Ed-logo-white.png" alt="Next Gen Music Ed logo" class="logo">
+        <div class="titleBlock">
+          <h1>Music Classroom Observation Tools</h1>
+          <div class="by">Developed by Kevin Droe, Ph.D.</div>
+        </div>
+      </div>
+
+      <div class="tools">
+        <div class="search" role="search">
+          <!-- magnifier -->
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M10.5 18.5a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" stroke="rgba(246,247,255,.75)" stroke-width="2"/>
+            <path d="M16.5 16.5 21 21" stroke="rgba(246,247,255,.75)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <input id="q" type="text" placeholder="Search apps (e.g., rehearsal, feedback, approval)..." />
+        </div>
+
+        <div class="pill" title="Keyboard shortcuts">
+          <span>Shortcuts</span>
+          <span class="kbd">1–5</span>
+          <span class="kbd">Enter</span>
+        </div>
+      </div>
+    </div>
+
+    <section class="hero" aria-label="Overview">
+      <div class="heroInner">
+        <div>
+          <h2>Observe. Quantify. Reflect. Improve.</h2>
+          <p>
+            A set of fast, student-friendly tools for capturing what actually happens in music rehearsals and lessons.
+            Designed for clean export into an LMS or Google Forms — and built to run smoothly on phones.
+          </p>
+        </div>
+        <div class="ctaRow">
+          <a class="btn btnPrimary" href="#" id="openFirst">
+            <!-- spark -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2l1.2 5.4L18 8.6l-4.8 1.2L12 15l-1.2-5.2L6 8.6l4.8-1.2L12 2Z" stroke="rgba(246,247,255,.92)" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M19 13l.7 3.2L23 17l-3.3.8L19 21l-.7-3.2L15 17l3.3-.8L19 13Z" stroke="rgba(246,247,255,.72)" stroke-width="2" stroke-linejoin="round"/>
+            </svg>
+            Open the first tool
+          </a>
+          <a class="btn" href="https://kevindroe.github.io/" target="_blank" rel="noopener">
+            <!-- link -->
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1" stroke="rgba(246,247,255,.75)" stroke-width="2" stroke-linecap="round"/>
+              <path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1" stroke="rgba(246,247,255,.75)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Kevin’s GitHub
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" id="cards" aria-label="Apps">
+      <!-- Card templates inserted by JS -->
+    </section>
+
+    <div class="footer">
+      <div>
+        Tip: If something seems “unclickable,” make sure you’re using the GitHub Pages URL (not a Google Drive preview).
+      </div>
+      <div>
+        Want one link for students? Use this hub page and post it in Google Classroom.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Your app URLs (as provided)
+    const APPS = [
+      {
+        key: "1",
+        name: "Student-Centeredness Analyzer",
+        url: "https://kevindroe.github.io/student-centered-analyzer/",
+        desc: "Timers + automatic classification with centeredness score and export — a quick snapshot of teacher- vs student-centered activity.",
+        tags: ["Timers", "Centeredness", "Export"],
+        accent: "a3",
+        icon: "meter"
+      },
+      {
+        key: "2",
+        name: "Teacher Approval–Disapproval Counter",
+        url: "https://kevindroe.github.io/approval-diapproval-counter/",
+        desc: "Fast counters (music/social approvals & disapprovals) with notes and clean summary export for reflection and coaching.",
+        tags: ["Counters", "Behavior", "Export"],
+        accent: "a2",
+        icon: "hand"
+      },
+      {
+        key: "3",
+        name: "Feedback Type Counter",
+        url: "https://kevindroe.github.io/feedback-type-counter/",
+        desc: "Track feedback types after performance (specific, corrective, praise, questioning, none) and export patterns.",
+        tags: ["Feedback", "Counts", "Export"],
+        accent: "a5",
+        icon: "chat"
+      },
+      {
+        key: "4",
+        name: "Music Lesson Timer",
+        url: "https://kevindroe.github.io/music-lesson-timer/",
+        desc: "Lesson observation timing: student-only performance, teacher modeling, together (we play), and talk — plus notes & export.",
+        tags: ["Lesson", "Modeling", "Notes"],
+        accent: "a1",
+        icon: "note"
+      },
+      {
+        key: "5",
+        name: "Rehearsal Flow Efficiency Tracker",
+        url: "https://kevindroe.github.io/Rehearsal-Flow-Efficiency/",
+        desc: "Time categories and bucket analysis (productive/support/lost) to see rehearsal flow and pacing at a glance — made for mobile.",
+        tags: ["Rehearsal", "Flow", "Buckets"],
+        accent: "a4",
+        icon: "wave"
+      },
+    ];
+
+    const ICONS = {
+      meter: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 3a9 9 0 1 0 9 9" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 12l6-3" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M3 12h3M12 3v3" stroke="rgba(246,247,255,.55)" stroke-width="2" stroke-linecap="round"/>
+      </svg>`,
+      hand: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M8 11V7a2 2 0 1 1 4 0v4" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M12 11V6a2 2 0 1 1 4 0v5" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M16 11V8a2 2 0 1 1 4 0v6a6 6 0 0 1-6 6h-4a6 6 0 0 1-6-6v-2a2 2 0 1 1 4 0v1" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linecap="round"/>
+      </svg>`,
+      chat: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M20 15a4 4 0 0 1-4 4H9l-5 3V7a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v8Z" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M8 9h8M8 12h6" stroke="rgba(246,247,255,.55)" stroke-width="2" stroke-linecap="round"/>
+      </svg>`,
+      note: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M9 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="rgba(246,247,255,.80)" stroke-width="2"/>
+        <path d="M12 12V4l9-2v8l-9 2" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linejoin="round"/>
+        <path d="M21 10a3 3 0 1 0 0-6" stroke="rgba(246,247,255,.55)" stroke-width="2" stroke-linecap="round"/>
+      </svg>`,
+      wave: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M2 12c3-6 7-6 10 0s7 6 10 0" stroke="rgba(246,247,255,.80)" stroke-width="2" stroke-linecap="round"/>
+        <path d="M2 16c3-4 7-4 10 0s7 4 10 0" stroke="rgba(246,247,255,.55)" stroke-width="2" stroke-linecap="round"/>
+      </svg>`
+    };
+
+    const cardsEl = document.getElementById("cards");
+    const qEl = document.getElementById("q");
+
+    function cardHTML(app){
+      const tags = app.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join("");
+      return `
+        <article class="card" data-name="${escapeHtml((app.name + " " + app.desc + " " + app.tags.join(" ")).toLowerCase())}" data-key="${app.key}">
+          <div class="accent ${app.accent}"></div>
+          <div class="cardInner">
+            <div class="cardTop">
+              <div class="cardTitle">
+                <div class="icon" aria-hidden="true">${ICONS[app.icon] || ""}</div>
+                <div>
+                  <h3>${escapeHtml(app.name)}</h3>
+                  <p>${escapeHtml(app.desc)}</p>
+                </div>
+              </div>
+              <div class="tiny" title="Keyboard shortcut">
+                <span class="kbd">${app.key}</span>
+              </div>
+            </div>
+
+            <div class="tags">${tags}</div>
+
+            <div class="cardActions">
+              <a class="btn btnPrimary" href="${app.url}" target="_blank" rel="noopener">
+                Open tool
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 16l8-8" stroke="rgba(246,247,255,.9)" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M10 8h8v8" stroke="rgba(246,247,255,.9)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 18h6" stroke="rgba(246,247,255,.45)" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </a>
+
+              <div class="tiny">
+                Share: <code>${shortUrl(app.url)}</code>
+              </div>
+            </div>
+          </div>
+        </article>
+      `;
+    }
+
+    function shortUrl(url){
+      try{
+        const u = new URL(url);
+        return u.pathname === "/" ? u.hostname : (u.hostname + u.pathname);
+      }catch{ return url; }
+    }
+
+    function escapeHtml(s){
+      return (s ?? "").toString()
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function render(list){
+      cardsEl.innerHTML = list.map(cardHTML).join("");
+      // hero "Open first tool"
+      const first = list[0]?.url || APPS[0].url;
+      document.getElementById("openFirst").href = first;
+      document.getElementById("openFirst").target = "_blank";
+      document.getElementById("openFirst").rel = "noopener";
+    }
+
+    function filter(){
+      const q = (qEl.value || "").trim().toLowerCase();
+      const list = !q ? APPS : APPS.filter(a => (a.name + " " + a.desc + " " + a.tags.join(" ")).toLowerCase().includes(q));
+      render(list);
+    }
+
+    // Initial render
+    render(APPS);
+
+    // Search
+    qEl.addEventListener("input", filter);
+
+    // Keyboard shortcuts:
+    // 1-5 open corresponding app; Enter opens first visible card
+    window.addEventListener("keydown", (e) => {
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : "";
+      if (tag === "input" || tag === "textarea") return;
+
+      if (/^[1-5]$/.test(e.key)) {
+        const app = APPS.find(a => a.key === e.key);
+        if (app) window.open(app.url, "_blank", "noopener");
+      }
+
+      if (e.key === "Enter") {
+        const firstCard = cardsEl.querySelector(".card");
+        if (!firstCard) return;
+        const key = firstCard.getAttribute("data-key");
+        const app = APPS.find(a => a.key === key);
+        if (app) window.open(app.url, "_blank", "noopener");
+      }
+
+      // "/" focuses search (like many apps)
+      if (e.key === "/") {
+        e.preventDefault();
+        qEl.focus();
+      }
+    });
+  </script>
+</body>
+</html>
