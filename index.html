@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Next-Gen Music Ed — Multi Tool Hub</title>
+
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background: #ffffff;
+    color: #111;
+}
+
+header {
+    text-align: center;
+    padding: 25px 15px 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.logo {
+    max-width: 260px;
+    height: 120px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+h1 {
+    margin: 5px 0;
+    font-size: 28px;
+}
+
+.subtitle {
+    color: #444;
+    margin-bottom: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px;
+}
+
+.search-box {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    margin-bottom: 25px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+.card {
+    border-radius: 12px;
+    padding: 18px;
+    margin-bottom: 18px;
+    transition: 0.2s;
+    color: #111;
+}
+
+.card:hover {
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+    transform: translateY(-3px);
+}
+
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.icon {
+    font-size: 22px;
+}
+
+.card-desc {
+    margin-bottom: 12px;
+}
+
+.open-btn {
+    padding: 10px 16px;
+    border: none;
+    background: #111;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.open-btn:hover {
+    background: #333;
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* Card Colors */
+.approval { background: #e3f2fd; }
+.feedback { background: #f3e5f5; }
+.lesson { background: #e8f5e9; }
+.rehearsal { background: #fff3e0; }
+.centered { background: #fce4ec; }
+
+@media (max-width:600px){
+    h1 { font-size: 22px; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <img src="Next-Gen-Music-Ed-logo.png" class="logo" />
+    <h1>Next-Gen Music Ed Tools</h1>
+    <div class="subtitle">Multi-Tool Observation & Teaching Apps</div>
+</header>
+
+<div class="container">
+
+<input 
+    type="text" 
+    id="searchInput" 
+    class="search-box" 
+    placeholder="Search tools..."
+    onkeyup="filterTools()"
+/>
+
+<div id="toolList">
+
+    <div class="card approval" 
+         data-name="approval disapproval teacher counter positive corrective behavior observation">
+        <div class="card-title">
+            <span class="icon">👍</span>
+            Teacher Approval–Disapproval Counter
+        </div>
+        <div class="card-desc">
+            Tracks positive and corrective teaching behaviors during live or video observation.
+        </div>
+        <button class="open-btn"
+            onclick="openTool('https://kevindroe.github.io/approval-diapproval-counter/')">
+            Open Tool
+        </button>
+    </div>
+
+    <div class="card feedback" 
+         data-name="feedback analyzer instructional patterns categories critique praise response">
+        <div class="card-title">
+            <span class="icon">💬</span>
+            Feedback Type Analyzer
+        </div>
+        <div class="card-desc">
+            Categorizes and analyzes types of teacher feedback to better understand instructional patterns.
+        </div>
+        <button class="open-btn"
+            onclick="openTool('https://kevindroe.github.io/feedback-type-counter/')">
+            Open Tool
+        </button>
+    </div>
+
+    <div class="card lesson" 
+         data-name="music lesson timer modeling talk performance instruction analysis">
+        <div class="card-title">
+            <span class="icon">⏱️</span>
+            Music Lesson Observation
+        </div>
+        <div class="card-desc">
+            Measures how time is spent in lessons across performance, modeling, and instruction categories.
+        </div>
+        <button class="open-btn"
+            onclick="openTool('https://kevindroe.github.io/music-lesson-timer/')">
+            Open Tool
+        </button>
+    </div>
+
+    <div class="card rehearsal" 
+         data-name="rehearsal pacing transitions engagement productivity efficiency tracker">
+        <div class="card-title">
+            <span class="icon">🎼</span>
+            Rehearsal Flow Efficiency Tracker
+        </div>
+        <div class="card-desc">
+            Monitors rehearsal pacing and transitions to evaluate instructional efficiency and engagement.
+        </div>
+        <button class="open-btn"
+            onclick="openTool('https://kevindroe.github.io/Rehearsal-Flow-Efficiency/')">
+            Open Tool
+        </button>
+    </div>
+
+    <div class="card centered" 
+         data-name="student centered teacher centered balance engagement participation analyzer">
+        <div class="card-title">
+            <span class="icon">⚖️</span>
+            Teacher–Student Centeredness Analyzer
+        </div>
+        <div class="card-desc">
+            Calculates the balance between teacher-centered and student-centered instructional behaviors.
+        </div>
+        <button class="open-btn"
+            onclick="openTool('https://kevindroe.github.io/student-centered-analyzer/')">
+            Open Tool
+        </button>
+    </div>
+
+</div>
+</div>
+
+<footer>
+Developed by Kevin Droe, Ph.D.
+</footer>
+
+<script>
+function openTool(url) {
+    window.open(url, "_blank");
+}
+
+function filterTools() {
+    const input = document.getElementById("searchInput").value.toLowerCase();
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+        const title = card.querySelector(".card-title").innerText.toLowerCase();
+        const description = card.querySelector(".card-desc").innerText.toLowerCase();
+        const keywords = card.dataset.name ? card.dataset.name.toLowerCase() : "";
+
+        if (
+            title.includes(input) ||
+            description.includes(input) ||
+            keywords.includes(input)
+        ) {
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+</script>
+
+</body>
+</html>
